@@ -2,6 +2,8 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 
 // import { router } from './routes/person.route';
 import personRoute from './routes/person.route';
+import { HttpException } from './exceptions/http-exception';
+import { ApiResponseHelper } from './utils/api-response';
 
 const app: Application = express();
 
@@ -135,9 +137,21 @@ app.use(
 // global error handler
 app.use(
     (err: Error, req: Request, res: Response, next: NextFunction) => {
-        return res.status(500).json(
-            { message: err.message ?? "Internal Server Error" }
-        ); 
+        if(err instanceof HttpException){
+            return ApiResponseHelper.error(
+                res, 
+                err.message,
+                err.status
+            );
+        }
+        return ApiResponseHelper.error(
+            res, 
+            err?.message || "Internal Server Error", 
+            500
+        );
+        // return res.status(500).json(
+        //     { message: err.message ?? "Internal Server Error" }
+        // ); 
     }
 );
 
