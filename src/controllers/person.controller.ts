@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { data } from "../models/person.model";
 import { HttpException } from "../exceptions/http-exception";
 import { ApiResponseHelper } from "../utils/api-response";
+import { CreatePersonDTO } from "../dtos/person.dto";
+import { z } from "zod";
 
 export class PersonController {
     // 1. GET - get all
@@ -32,13 +34,23 @@ export class PersonController {
     // 2. consistent api response
     // 3. global error handling middleware
     async createPerson(req: Request, res: Response) {
-        const { name, age } = req.body; // client request body/input
-        if(!name){ // logic through exception handling
-            throw new HttpException(400, "Name is required");
+        const parseResult = CreatePersonDTO.safeParse(req.body);
+        if(!parseResult.success){
+            throw new HttpException(
+                400, 
+                z.prettifyError(parseResult.error)
+            );
         }
-        if(!age){
-            throw new HttpException(400, "Age is required");
-        }
+        const { name, age } = parseResult.data; // validated data
+
+        // const { name, age } = req.body; // client request body/input
+        // if(!name){ // logic through exception handling
+        //     throw new HttpException(400, "Name is required");
+        // }
+        // if(!age){
+        //     throw new HttpException(400, "Age is required");
+        // }
+
         // database operation
         const newPerson = {
             id: data.length + 1,
