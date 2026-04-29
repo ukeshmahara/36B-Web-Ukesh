@@ -4,6 +4,9 @@ import { HttpException } from "../exceptions/http-exception";
 import { ApiResponseHelper } from "../utils/api-response";
 import { CreatePersonDTO } from "../dtos/person.dto";
 import { z } from "zod";
+import { PersonService } from "../services/person.service";
+
+const personService = new PersonService();
 
 export class PersonController {
     // 1. GET - get all
@@ -41,23 +44,7 @@ export class PersonController {
                 z.prettifyError(parseResult.error)
             );
         }
-        const { name, age } = parseResult.data; // validated data
-
-        // const { name, age } = req.body; // client request body/input
-        // if(!name){ // logic through exception handling
-        //     throw new HttpException(400, "Name is required");
-        // }
-        // if(!age){
-        //     throw new HttpException(400, "Age is required");
-        // }
-
-        // database operation
-        const newPerson = {
-            id: data.length + 1,
-            name,
-            age
-        }
-        data.push(newPerson);
+        const newPerson = personService.createPerson(parseResult.data);
         return ApiResponseHelper.success(res, newPerson, 201, "Person created");
     }
 
