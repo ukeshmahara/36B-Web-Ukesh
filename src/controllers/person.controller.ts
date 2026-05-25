@@ -56,4 +56,13 @@ export class PersonController {
     // 3. update the person's name and age with request body
     // 4. return the updated person with consistent api response
     // 5. implement in router -> /api/persons/:id [PUT]
+    // contd. (NEW)
+    // Use Zod imlementation for validation UpdatePersonDTO
+    // Change update to repositories and services
+    // 1. in repository, create update function that takes id and Partial<Person>
+    // 2. in service, create updatePerson function that takes id and UpdatePersonDTO
+    // 2.1 - validate if id exists, if not throw 404
+    // 2.2 - validate if name is "admin", if not throw 403
+    // 2.3 - call repository update function with id and update data
+    // 3. in controller, call service updatePerson function and return response
 }
