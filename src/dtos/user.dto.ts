@@ -9,3 +9,14 @@ export const CreateUserDto = UserSchema.pick({
     password: true,
 });
 export type CreateUserDto = z.infer<typeof CreateUserDto>;
+// 1. create new schema
+// export const LoginUserDto = z.object({
+//     email: z.email(),
+//     password: z.string().min(6),
+// })
+// 2. use pick to create new schema from existing schema
+export const LoginUserDto = UserSchema.pick({
+    email: true,
+    password: true,
+});
+export type LoginUserDto = z.infer<typeof LoginUserDto>;
