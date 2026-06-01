@@ -5,6 +5,7 @@ import personRoute from './routes/person.route';
 import { HttpException } from './exceptions/http-exception';
 import { ApiResponseHelper } from './utils/api-response';
 import userRoute from './routes/user.route';
+import adminUserRoute from './routes/admin/user.route';
 
 const app: Application = express();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true })); // use form-urlencoded as reque
 app.use("/api/persons", personRoute);
 
 app.use("/api/v1/auth", userRoute);
+app.use("/api/v1/admin/users", adminUserRoute);
 
 type Product = {
     id: number;
