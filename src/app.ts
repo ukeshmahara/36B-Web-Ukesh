@@ -7,6 +7,8 @@ import { ApiResponseHelper } from './utils/api-response';
 import userRoute from './routes/user.route';
 import adminUserRoute from './routes/admin/user.route';
 import uploadRoute from './routes/upload.route';
+import blogRoute from './routes/blog.route';
+
 import path from "path";
 
 const app: Application = express();
@@ -21,7 +23,7 @@ app.use(express.urlencoded({ extended: true })); // use form-urlencoded as reque
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use("/api/v1/file", uploadRoute);
 app.use("/api/persons", personRoute);
-
+app.use("/api/v1/blogs", blogRoute);
 app.use("/api/v1/auth", userRoute);
 app.use("/api/v1/admin/users", adminUserRoute);
 
