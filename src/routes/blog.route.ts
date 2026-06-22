@@ -17,4 +17,9 @@ router.get(
     blogController.getBlogsByAuthorId
 );
 
+router.get(
+    "/",
+    blogController.getPaginatedBlogs
+);
+
 export default router;

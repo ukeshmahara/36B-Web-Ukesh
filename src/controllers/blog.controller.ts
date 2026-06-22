@@ -41,4 +41,17 @@ export class BlogController {
             );
         }
     }
+    async getPaginatedBlogs(req: Request, res: Response) {
+        try{
+            const { page = "1", limit = "10", search } = req.query; // ?
+            const {data, pagination} = await blogService.getPaginatedBlogs(String(page), String(limit), search ?  String(search) : undefined);
+            return ApiResponseHelper.success(res, data,  200, "Blogs retrieved successfully", pagination);
+        }catch (e: Error | any) {
+            return ApiResponseHelper.error(
+                res,
+                e?.message || "Failed to get blogs",
+                e.status || 500
+            );
+        }
+    }
 }
